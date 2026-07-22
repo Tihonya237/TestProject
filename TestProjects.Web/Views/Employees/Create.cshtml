@@ -1,0 +1,33 @@
+﻿@model TestProjects.DAL.Models.Employee
+
+@{
+    ViewData["Title"] = "Добавление сотрудника";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div class="row mt-4">
+    <div class="col-md-8">
+        <div class="card p-4 shadow-sm bg-white">
+            <form asp-action="Create" method="post">
+                <div class="form-group mb-3">
+                    <label asp-for="FullName" class="form-label">ФИО сотрудника</label>
+                    <input asp-for="FullName" class="form-control" placeholder="Иванов Иван Иванович" required />
+                    <span asp-validation-for="FullName" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="Email" class="form-label">Email</label>
+                    <input asp-for="Email" type="email" class="form-control" placeholder="example@mail.com" required />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+
+                <div class="d-flex align-items-center mt-4 gap-2">
+                    <button type="submit" class="btn btn-success">Создать профиль</button>
+                    <a asp-action="List" class="btn btn-secondary">Назад к списку</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+

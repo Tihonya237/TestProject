@@ -1,0 +1,141 @@
+﻿@model TestProjects.BL.DTOs.ProjectCreateDto
+
+<h2>Создание проекта по шагам</h2>
+
+<form asp-action="Create" method="post" enctype="multipart/form-data" id="wizardForm">
+
+    <!-- STEP 1: Core Project Metadata -->
+    <div class="wizard-step" id="step-1">
+        <h4 class="mb-3">Шаг 1: Основная информация</h4>
+        <div class="form-group mb-3">
+            <label class="form-label">Название проекта</label>
+            <input asp-for="Name" class="form-control" required />
+        </div>
+        <div class="form-group mb-3">
+            <label class="form-label">Дата начала</label>
+            <input asp-for="StartDate" type="date" class="form-control" required />
+        </div>
+        <div class="form-group mb-3">
+            <label class="form-label">Дата окончания</label>
+            <input asp-for="EndDate" type="date" class="form-control" required />
+        </div>
+        <div class="form-group mb-3">
+            <label class="form-label">Приоритет</label>
+            <input asp-for="Priority" type="number" class="form-control" required />
+        </div>
+        <button type="button" class="btn btn-primary" onclick="changeStep(1, 2)">Далее</button>
+    </div>
+
+    <!-- STEP 2: B2B Relationship / Stakeholders -->
+    <div class="wizard-step d-none" id="step-2">
+        <h4 class="mb-3">Шаг 2: Компании</h4>
+        <div class="form-group mb-3">
+            <label class="form-label">Компания-заказчик</label>
+            <input asp-for="CustomerCompany" class="form-control" required />
+        </div>
+        <div class="form-group mb-3">
+            <label class="form-label">Компания-исполнитель</label>
+            <input asp-for="CExecutorCompany" class="form-control" required />
+        </div>
+        <button type="button" class="btn btn-secondary" onclick="changeStep(2, 1)">Назад</button>
+        <button type="button" class="btn btn-primary" onclick="changeStep(2, 3)">Далее</button>
+    </div>
+
+    <!-- STEP 3: Project Manager Selection (One-to-Many Link) -->
+    <div class="wizard-step d-none" id="step-3">
+        <h4 class="mb-3">Шаг 3: Выбор руководителя</h4>
+        <div class="form-group mb-3">
+            <label class="form-label font-weight-bold">Начните вводить ФИО руководителя проекта:</label>
+
+            <input type="text" id="manager-search-input" list="managers-list" class="form-control" placeholder="Начните вводить ФИО..." autocomplete="off" required>
+            <input type="hidden" asp-for="ProjectManagerId" id="hidden-manager-id" />
+
+            <datalist id="managers-list">
+                @if (ViewBag.AllEmployees != null)
+                {
+                    @foreach (var emp in ViewBag.AllEmployees)
+                    {
+                        <option value="@emp.FullName" data-id="@emp.Id"></option>
+                    }
+                }
+            </datalist>
+            <span asp-validation-for="ProjectManagerId" class="text-danger"></span>
+        </div>
+        <button type="button" class="btn btn-secondary" onclick="changeStep(3, 2)">Назад</button>
+        <button type="button" class="btn btn-primary" onclick="changeStep(3, 4)">Далее</button>
+    </div>
+
+    <!-- STEP 4: Project Team Composition (Many-to-Many Link) -->
+    <div class="wizard-step d-none" id="step-4">
+        <h4 class="mb-3">Шаг 4: Выбор исполнителей</h4>
+
+        <div class="form-group mb-4">
+            <label class="form-label text-muted">Начните вводить ФИО сотрудника и нажмите «Добавить»:</label>
+            <div class="input-group">
+                <input type="text" id="employee-search-input" list="employees-list" class="form-control" placeholder="Начните вводить ФИО..." autocomplete="off">
+                <button type="button" id="add-employee-btn" class="btn btn-primary">Добавить в проект</button>
+            </div>
+
+            <datalist id="employees-list">
+                @if (ViewBag.AllEmployees != null)
+                {
+                    @foreach (var emp in ViewBag.AllEmployees)
+                    {
+                        <option value="@emp.FullName" data-id="@emp.Id" data-email="@emp.Email"></option>
+                    }
+                }
+            </datalist>
+        </div>
+
+        <div class="mb-4">
+            <label class="form-label fw-bold">Текущий состав команды:</label>
+            <table class="table table-sm table-bordered table-striped align-middle" id="selected-employees-table">
+                <thead class="table-light">
+                    <tr>
+                        <th>ФИО сотрудника</th>
+                        <th>Email</th>
+                        <th style="width: 50px; text-align: center;">Действие</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="mt-4">
+            <button type="button" class="btn btn-secondary" onclick="changeStep(4, 3)">Назад</button>
+            <button type="button" class="btn btn-primary" onclick="changeStep(4, 5)">Далее</button>
+        </div>
+    </div>
+
+    <!-- STEP 5: Document Uploads & Storage Processing -->
+    <div class="wizard-step d-none" id="step-5">
+        <h4 class="mb-3">Шаг 5: Загрузка документов проекта</h4>
+
+        <!-- Native Drag & Drop Zone acting as a proxy layout for the hidden input file selector -->
+        <div id="drop-zone" class="border border-primary rounded p-5 text-center my-3 bg-light" style="cursor: pointer; border-style: dashed !important;">
+            <i class="bi bi-cloud-upload-fill" style="font-size: 2rem;"></i>
+            <p class="mt-2 mb-0">Перетащите документы прямо сюда или кликните для выбора с компьютера</p>
+            <input type="file" name="files" id="file-input" multiple class="d-none" />
+        </div>
+
+        <!-- File upload state visual tracker container -->
+        <div class="fw-bold mb-2">Выбранные файлы:</div>
+        <ul id="file-list" class="list-group mb-4">
+            <li class="list-group-item text-muted" id="empty-files-mock">Файлы еще не выбраны</li>
+        </ul>
+
+        <button type="button" class="btn btn-secondary" onclick="changeStep(5, 4)">Назад</button>
+        <button type="submit" class="btn btn-success">Создать проект</button>
+    </div>
+
+</form>
+
+@section Scripts 
+{
+    <script src="~/js/project-wizard.js" asp-append-version="true"></script>
+}
+
+
+
+
