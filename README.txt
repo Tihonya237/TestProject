@@ -13,6 +13,5 @@
 4. Запустить проект через F5.
 
 <img src="https://github.com/Tihonya237/TestProject/blob/main/TestProjects.Web/Models/img/1.png?raw=true" width="800">
-<img src="https://github.com/Tihonya237/MyGame/blob/main/Screenshots/1.png?raw=true" width="800">
-<img src="https://github.com/Tihonya237/TestProjects.Web/Models/img/2.png?raw=true" width="800">
-<img src="https://github.com/Tihonya237/TestProjects.Web/Models/img/3.png?raw=true" width="800">
+<img src="https://github.com/Tihonya237/TestProject/blob/main/TestProjects.Web/Models/img/2.png?raw=true" width="800">
+<img src="https://github.com/Tihonya237/TestProject/blob/main/TestProjects.Web/Models/img/3.png?raw=true" width="800">
