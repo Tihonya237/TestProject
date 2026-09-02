@@ -11,3 +11,7 @@
 2. Откройте файл решения TestProjects.sln в среде разработки Visual Studio (рекомендуется версия 2022 и новее).
 3. Необходимо назначить проект TestProjects.Web как запускаемы проект(ПКМ по проекту -> Назначить запускаемым проектом). Слои DAL, BL скомпилируются автоматически.
 4. Запустить проект через F5.
+
+<img src="https://github.com/Tihonya237/TestProjects.Web/Models/img/1.png?raw=true" width="800">
+<img src="https://github.com/Tihonya237/TestProjects.Web/Models/img/2.png?raw=true" width="800">
+<img src="https://github.com/Tihonya237/TestProjects.Web/Models/img/3.png?raw=true" width="800">
