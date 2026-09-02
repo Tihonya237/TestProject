@@ -1,0 +1,18 @@
+# TestProject
+Проект разработан с разделением на три независимых слоя (сборки) для обеспечения масштабируемости, изоляции логики и чистоты кода:
+1. TestProjects.DAL — содержит контекст базы данных (AppDbContext) и доменные модели (Project, Employee).
+2. TestProjects.BL — cодержит в себе сервисы (ProjectService, EmployeeService) для обработки данных, логику валидации, загрузки файлов, а также объекты передачи данных (ProjectCreateDto).
+3. TestProjects.Web — веб-интерфейс на базе ASP.NET Core MVC. Контроллеры спроектированы и изолированы от контекста БД, общаясь исключительно со слоем (.BL).
+
+В качестве СУБД используется легковесная база данных SQLite(Microsoft.EntityFrameworkCore.Sqlite). 
+Файл базы данных project.db автоматически генерируется в корневом каталоге запускаемого веб-приложения при первом старте.
+
+Инструкция по запуске: 
+1. Распокавать архив в рабочую директорию.
+2. Откройте файл решения TestProjects.sln в среде разработки Visual Studio (рекомендуется версия 2022 и новее).
+3. Необходимо назначить проект TestProjects.Web как запускаемы проект(ПКМ по проекту -> Назначить запускаемым проектом). Слои DAL, BL скомпилируются автоматически.
+4. Запустить проект через F5.
+
+![image alt](https://github.com/Tihonya237/TestProject/blob/fb598497f7da1fc817718833f4921114923a9fd7/img/1.png)
+<img src="https://github.com/Tihonya237/TestProject/blob/main/img/1.png?raw=true" width="800">
+<img src="https://github.com/Tihonya237/TestProject/blob/main/img/1.png?raw=true" width="800">
