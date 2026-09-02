@@ -12,4 +12,4 @@
 3. Необходимо назначить проект TestProjects.Web как запускаемы проект(ПКМ по проекту -> Назначить запускаемым проектом). Слои DAL, BL скомпилируются автоматически.
 4. Запустить проект через F5.
 
-![image alt](https://github.com/Tihonya237/TestProject/blob/9a0d11491e8ddf5b205b90487359e7c6817bcc83/TestProjects.Web/Models/img/2.png)
+![image alt](https://github.com/Tihonya237/TestProject/blob/fb598497f7da1fc817718833f4921114923a9fd7/img/1.png)
